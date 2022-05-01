@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Jooycar Brands</string>
+    <string name="no_internet_message">Sorry!!, somethings wrong with your internet</string>
+    <string name="generic_message">We Sorry!!, somethings wrong</string>
+    <string name="welcome_message">Welcome to Jooycar Brands</string>
+    <string name="welcome_subtitle">To know the models of specifics brands, please make your list
+     by selecting your desired items</string>
+    <string name="accept_button">I got it</string>
+    <string name="ok">Ok</string>
+</resources>
