@@ -16,8 +16,8 @@ import com.lumos.jooycarbrands.ui.brand.ModelsBrandScreen
 import com.lumos.jooycarbrands.ui.brand.entities.BrandArgs
 import com.lumos.jooycarbrands.ui.brand.navtype.BrandArgType
 import com.lumos.jooycarbrands.ui.route.BrandsRoute
+import com.lumos.jooycarbrands.ui.route.BrandsRoute.Companion.BRAND_ARGS
 import com.lumos.jooycarbrands.ui.route.action.BrandsAction
-import com.lumos.jooycarbrands.ui.route.action.BrandsAction.Companion.BRAND_ARGS
 import kotlinx.coroutines.InternalCoroutinesApi
 
 /**

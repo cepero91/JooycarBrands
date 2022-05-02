@@ -11,7 +11,7 @@ class BrandsAction(navController: NavHostController) {
 
     val navigateToModels: (args: BrandArgs) -> Unit = {
         val json = Uri.encode(Gson().toJson(it))
-        navController.navigate(BrandsRoute.Models.path.replace(BRAND_ARGS, json))
+        navController.navigate(BrandsRoute.Models.path.replace("{$BRAND_ARGS}", json))
     }
 
     val navigateUp: () -> Unit = {
