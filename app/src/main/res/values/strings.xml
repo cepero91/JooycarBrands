@@ -6,5 +6,10 @@
     <string name="welcome_subtitle">To know the models of specifics brands, please make your list
      by selecting your desired items</string>
     <string name="accept_button">I got it</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
+    <string name="contextual_mode">%s SELECTED</string>
+    <string name="label_submodels">SUBMODELS:</string>
+    <string name="label_year">\"YEAR: \"</string>
+    <string name="label_fuel">\"FUEL: \"</string>
+    <string name="jooycar_models">JOOYCAR MODELS</string>
 </resources>

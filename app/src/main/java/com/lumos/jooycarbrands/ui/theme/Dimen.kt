@@ -15,4 +15,8 @@ val SmallPd = 4.dp
 val MediumPd = 8.dp
 val LargePd = 24.dp
 
+// Elevation
+val NormalElevation = 5.dp
+
 val WelcomeIconSize = 78.dp
+val ImageBrandSize = 48.dp

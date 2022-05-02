@@ -20,6 +20,9 @@ import androidx.constraintlayout.compose.Dimension
 import coil.compose.rememberImagePainter
 import com.lumos.jooycarbrands.R
 import com.lumos.jooycarbrands.ui.brand.entities.BrandPresentation
+import com.lumos.jooycarbrands.ui.theme.ImageBrandSize
+import com.lumos.jooycarbrands.ui.theme.NormalPd
+import com.lumos.jooycarbrands.util.Constants.TWO_PERCENT
 
 /**
  * Created by Cepero on 30/04/2022.
@@ -47,10 +50,10 @@ fun BrandItem(
                 },
                 onLongClick = onLongClick
             )
-            .padding(16.dp),
+            .padding(NormalPd),
     ) {
         val (image, name, selector) = createRefs()
-        val guideline = createGuidelineFromEnd(0.2f)
+        val guideline = createGuidelineFromEnd(TWO_PERCENT)
 
         Image(
             painter = rememberImagePainter(data = brand.img.orEmpty(), builder = {
@@ -59,11 +62,11 @@ fun BrandItem(
             }),
             contentDescription = null,
             modifier = Modifier
-                .size(38.dp)
+                .size(ImageBrandSize)
                 .constrainAs(image) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start, margin = 16.dp)
+                    start.linkTo(parent.start, margin = NormalPd)
                 }
         )
 
@@ -73,7 +76,7 @@ fun BrandItem(
             modifier = Modifier.constrainAs(name) {
                 top.linkTo(image.top)
                 bottom.linkTo(image.bottom)
-                start.linkTo(image.end, margin = 16.dp)
+                start.linkTo(image.end, margin = NormalPd)
                 end.linkTo(guideline)
                 width = Dimension.fillToConstraints
             }
@@ -85,7 +88,7 @@ fun BrandItem(
                     id = if (isSelected) R.drawable.ic_round_check_circle_24 else R.drawable.ic_round_radio_button_unchecked_24
                 ),
                 contentDescription = null,
-                tint = Color.Black,
+                tint = MaterialTheme.colors.primary,
                 modifier = Modifier.constrainAs(selector) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)

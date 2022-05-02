@@ -51,6 +51,9 @@ class ModelsViewModel @Inject constructor(
 
                 val result = asyncRequest.awaitAll()
 
+                /* the brand uuid of a model not match with previous id selected
+                * this is because is fake auto-generated service
+                * */
                 val hashmap = hashMapOf<String, List<ModelPresentation>>()
                 result.forEachIndexed { index, item ->
                     val primaryCondition = item.isSuccess && item.getData().isNotEmpty()

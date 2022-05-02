@@ -8,9 +8,9 @@ package com.lumos.jooycarbrands.ui.route
  */
 sealed class BrandsRoute(val path: String) {
     object Brands : BrandsRoute("brands")
-    object Models : BrandsRoute("models/{args}")
+    object Models : BrandsRoute("models/{$BRAND_ARGS}")
 
     companion object {
-        const val BRANDS_ARGS = "brandArgs"
+        const val BRAND_ARGS = "args"
     }
 }

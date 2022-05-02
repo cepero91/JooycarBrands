@@ -10,6 +10,8 @@ import com.lumos.jooycarbrands.ui.base.Event
 import com.lumos.jooycarbrands.ui.base.viewmodel.BaseViewModel
 import com.lumos.jooycarbrands.ui.brand.entities.BrandPresentation
 import com.lumos.jooycarbrands.ui.brand.state.BrandUiState
+import com.lumos.jooycarbrands.util.Constants.ONE
+import com.lumos.jooycarbrands.util.Constants.ZERO
 import com.lumos.jooycarbrands.util.dataOrNull
 import com.lumos.jooycarbrands.util.getError
 import com.lumos.jooycarbrands.util.isError
@@ -48,7 +50,7 @@ class BrandViewModel @Inject constructor(
      * show alert after refresh. It is recommended use SharedPreferences
      * or some local storage mechanism
      *  */
-    private var messageCount = 0
+    private var messageCount = ZERO
 
     init {
         loadBrands()
@@ -64,7 +66,7 @@ class BrandViewModel @Inject constructor(
                         it.copy(
                             isLoading = false,
                             brands = list.orEmpty(),
-                            selectedBrands = SparseBooleanArray(list?.size ?: 0)
+                            selectedBrands = SparseBooleanArray(list?.size ?: ZERO)
                         )
                     }
 
@@ -81,9 +83,9 @@ class BrandViewModel @Inject constructor(
     }
 
     private fun showWelcomeIfNeeded(list: List<BrandPresentation>?) {
-        if (messageCount == 0) {
+        if (messageCount == ZERO) {
             list.ifNotEmpty {
-                messageCount += 1
+                messageCount += ONE
                 _showWelcomeBottomSheet.trySend(Event(true))
             }
         }

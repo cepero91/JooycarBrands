@@ -15,10 +15,15 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
+import com.lumos.jooycarbrands.R
 import com.lumos.jooycarbrands.ui.brand.entities.ModelPresentation
 import com.lumos.jooycarbrands.ui.brand.entities.SubModelPresentation
+import com.lumos.jooycarbrands.ui.theme.LargePd
+import com.lumos.jooycarbrands.ui.theme.MediumPd
+import com.lumos.jooycarbrands.ui.theme.NormalElevation
+import com.lumos.jooycarbrands.ui.theme.NormalPd
 
 /**
  * Created by Cepero on 01/05/2022.
@@ -28,15 +33,15 @@ import com.lumos.jooycarbrands.ui.brand.entities.SubModelPresentation
  */
 @Composable
 fun ModelItem(model: ModelPresentation) {
-    Column(modifier = Modifier.padding(horizontal = 24.dp)) {
+    Column(modifier = Modifier.padding(horizontal = LargePd)) {
         Text(
             text = model.name.orEmpty(),
             style = MaterialTheme.typography.h4,
-            modifier = Modifier.padding(top = 8.dp)
+            modifier = Modifier.padding(top = MediumPd)
         )
-        Divider(Modifier.padding(vertical = 8.dp))
+        Divider(Modifier.padding(vertical = MediumPd))
         Text(
-            text = "SUBMODELS:",
+            text = stringResource(R.string.label_submodels),
             style = MaterialTheme.typography.body1
         )
     }
@@ -46,8 +51,13 @@ fun ModelItem(model: ModelPresentation) {
 fun SubModelsList(subModels: List<SubModelPresentation>) {
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = spacedBy(8.dp),
-        contentPadding = PaddingValues(start = 24.dp, end = 24.dp, bottom = 24.dp, top = 8.dp)
+        horizontalArrangement = spacedBy(MediumPd),
+        contentPadding = PaddingValues(
+            start = LargePd,
+            end = LargePd,
+            bottom = LargePd,
+            top = MediumPd
+        )
     ) {
         items(subModels) { item ->
             SubModelItem(subModel = item)
@@ -57,17 +67,23 @@ fun SubModelsList(subModels: List<SubModelPresentation>) {
 
 @Composable
 private fun SubModelItem(subModel: SubModelPresentation) {
-    Card(elevation = 5.dp, shape = RoundedCornerShape(8.dp)) {
-        Column(modifier = Modifier.padding(16.dp)) {
+    Card(elevation = NormalElevation, shape = RoundedCornerShape(MediumPd)) {
+        Column(modifier = Modifier.padding(NormalPd)) {
             Row {
-                Text(text = "YEAR: ", style = MaterialTheme.typography.body1)
+                Text(
+                    text = stringResource(R.string.label_year),
+                    style = MaterialTheme.typography.body1
+                )
                 Text(
                     text = subModel.year.toString(),
                     style = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.Bold)
                 )
             }
             Row {
-                Text(text = "FUEL: ", style = MaterialTheme.typography.body1)
+                Text(
+                    text = stringResource(R.string.label_fuel),
+                    style = MaterialTheme.typography.body1
+                )
                 Text(
                     text = subModel.fuelType.orEmpty(),
                     style = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.Bold)

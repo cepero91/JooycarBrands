@@ -23,17 +23,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.lumos.jooycarbrands.R
 import com.lumos.jooycarbrands.ui.base.component.ErrorSnackBar
+import com.lumos.jooycarbrands.ui.base.component.JooycarScaffold
 import com.lumos.jooycarbrands.ui.base.error.ErrorMessage
 import com.lumos.jooycarbrands.ui.brand.component.ModelItem
 import com.lumos.jooycarbrands.ui.brand.component.SubModelsList
 import com.lumos.jooycarbrands.ui.brand.entities.BrandArgs
 import com.lumos.jooycarbrands.ui.brand.viewmodel.ModelsViewModel
+import com.lumos.jooycarbrands.ui.theme.MediumPd
 import kotlinx.coroutines.delay
 
 /**
@@ -51,32 +54,22 @@ fun ModelsBrandScreen(
     modelsViewModel: ModelsViewModel = hiltViewModel()
 ) {
 
-    val context = LocalContext.current
+    /* states */
     val modelsUiState by modelsViewModel.modelUiState.collectAsState()
-    val errorSnackBar by modelsViewModel.showErrorMessage.collectAsState(initial = null)
 
+    /* side effects */
     LaunchedEffect(Unit) {
         modelsViewModel.initParameters(brandsSelected)
     }
 
-    LaunchedEffect(errorSnackBar) {
-        errorSnackBar?.let { event ->
-            scaffoldState.snackbarHostState.showSnackbar(
-                message = when (val error = event.type) {
-                    is ErrorMessage.CustomMessage -> error.message
-                    else -> context.getString(error?.srcMessage ?: R.string.generic_message)
-                }
-            )
-        }
-    }
-
-    Scaffold(
+    JooycarScaffold(
         scaffoldState = scaffoldState,
-        topBar = {
+        viewModel = modelsViewModel,
+        topAppBar = {
             TopAppBar(
                 title = {
                     Text(
-                        text = "JOOYCAR MODELS",
+                        text = stringResource(R.string.jooycar_models),
                         style = MaterialTheme.typography.h4,
                         color = Color.White
                     )
@@ -90,30 +83,22 @@ fun ModelsBrandScreen(
                     }
                 }
             )
-        },
-        snackbarHost = {
-            SnackbarHost(hostState = it) { data ->
-                ErrorSnackBar(message = data.message, onAction = {
-                    scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
-                })
-            }
         }
     ) {
         SwipeRefresh(
             state = rememberSwipeRefreshState(modelsUiState.isLoading),
-            onRefresh = modelsViewModel::loadModels,
-            modifier = Modifier.padding(it)
+            onRefresh = modelsViewModel::loadModels
         ) {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 modelsUiState.models.entries.forEach { entry ->
                     stickyHeader {
                         Text(
                             text = entry.key,
-                            style = MaterialTheme.typography.h3,
+                            style = MaterialTheme.typography.h4,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(MaterialTheme.colors.secondary)
-                                .padding(8.dp),
+                                .padding(MediumPd),
                             color = Color.White
                         )
                     }

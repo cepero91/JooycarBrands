@@ -16,5 +16,4 @@ fun <T, R> Result<T>.map(transform: T.() -> R) =
 
 fun <T> Result<T>.getData() = (this as Result.Success).data
 fun <T> Result<T>.getError() = (this as Result.Error).exception
-fun <T> Result<T>.errorOrNull() = if (this.isError) this.getError() else null
 fun <T> Result<T>.dataOrNull() = if (this.isSuccess) this.getData() else null

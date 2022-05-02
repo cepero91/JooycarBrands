@@ -11,14 +11,9 @@ import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
-import androidx.compose.material.SnackbarHost
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,12 +29,15 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.lumos.jooycarbrands.R
 import com.lumos.jooycarbrands.extensions.countChecked
-import com.lumos.jooycarbrands.ui.base.component.ErrorSnackBar
+import com.lumos.jooycarbrands.ui.base.component.JooycarScaffold
 import com.lumos.jooycarbrands.ui.base.error.ErrorMessage
 import com.lumos.jooycarbrands.ui.brand.component.BrandItem
+import com.lumos.jooycarbrands.ui.brand.component.MultiSelectAppBar
 import com.lumos.jooycarbrands.ui.brand.component.WelcomeBottomSheetContent
 import com.lumos.jooycarbrands.ui.brand.entities.BrandArgs
 import com.lumos.jooycarbrands.ui.brand.viewmodel.BrandViewModel
+import com.lumos.jooycarbrands.ui.theme.NormalPd
+import com.lumos.jooycarbrands.util.Constants.WELCOME_ALERT_ML
 import kotlinx.coroutines.delay
 
 /**
@@ -56,15 +54,16 @@ fun BrandScreen(
     brandViewModel: BrandViewModel = hiltViewModel(),
     navigateToModels: (BrandArgs) -> Unit
 ) {
-    val context = LocalContext.current
+
+    /* states */
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val brandsUiState by brandViewModel.brandUiState.collectAsState()
     val showWelcomeAlert by brandViewModel.showWelcomeBottomSheet.collectAsState(null)
     val multiSelectionEnable by brandViewModel.multiSelectEnabled.collectAsState()
     val goToModelsScreen by brandViewModel.goToModelsScreen.collectAsState(null)
-    val errorSnackBar by brandViewModel.showErrorMessage.collectAsState(initial = null)
 
+    /* back icon for contextual  mode */
     val navigationIcon: @Composable (() -> Unit) = {
         IconButton(onClick = brandViewModel::onMultiSelectDisable) {
             Icon(
@@ -75,27 +74,18 @@ fun BrandScreen(
         }
     }
 
+    /* on back pressed handler */
     BackHandler(multiSelectionEnable) {
         brandViewModel.onMultiSelectDisable()
     }
 
+    /* side effects */
     LaunchedEffect(showWelcomeAlert) {
         showWelcomeAlert?.let {
             if (it.type) {
-                delay(800L)
+                delay(WELCOME_ALERT_ML)
                 modalBottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
             } else modalBottomSheetState.animateTo(ModalBottomSheetValue.Hidden)
-        }
-    }
-
-    LaunchedEffect(errorSnackBar) {
-        errorSnackBar?.let { event ->
-            scaffoldState.snackbarHostState.showSnackbar(
-                message = when (val error = event.type) {
-                    is ErrorMessage.CustomMessage -> error.message
-                    else -> context.getString(error?.srcMessage ?: R.string.generic_message)
-                }
-            )
         }
     }
 
@@ -107,52 +97,27 @@ fun BrandScreen(
 
     ModalBottomSheetLayout(
         sheetState = modalBottomSheetState,
-        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+        sheetShape = RoundedCornerShape(topStart = NormalPd, topEnd = NormalPd),
         sheetContent = {
             WelcomeBottomSheetContent(onHide = brandViewModel::onWelcomeBottomSheetHide)
         }
     ) {
-        Scaffold(
+        JooycarScaffold(
             scaffoldState = scaffoldState,
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = if (multiSelectionEnable)
-                                "%s SELECTED".format(
-                                    brandsUiState.selectedBrands.countChecked()
-                                ) else "JOOYCAR BRANDS",
-                            style = MaterialTheme.typography.h4,
-                            color = Color.White
-                        )
-                    },
-                    navigationIcon = if (multiSelectionEnable) navigationIcon else null,
-                    backgroundColor = if (multiSelectionEnable) Color.Gray else MaterialTheme.colors.primary,
-                    actions = {
-                        if (multiSelectionEnable)
-                            IconButton(onClick = brandViewModel::onDoneClicked) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_round_check_24),
-                                    contentDescription = null,
-                                    tint = Color.White
-                                )
-                            }
-
-                    }
-                )
-            },
-            snackbarHost = {
-                SnackbarHost(hostState = it) { data ->
-                    ErrorSnackBar(message = data.message, onAction = {
-                        scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
-                    })
+            viewModel = brandViewModel,
+            topAppBar = {
+                MultiSelectAppBar(
+                    multiSelectionEnable = multiSelectionEnable,
+                    countChecked = brandsUiState.selectedBrands.countChecked(),
+                    navigationIcon = navigationIcon
+                ) {
+                    brandViewModel.onDoneClicked()
                 }
             }
         ) {
             SwipeRefresh(
                 state = rememberSwipeRefreshState(brandsUiState.isLoading),
-                onRefresh = brandViewModel::loadBrands,
-                modifier = Modifier.padding(it)
+                onRefresh = brandViewModel::loadBrands
             ) {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     itemsIndexed(brandsUiState.brands) { index, item ->

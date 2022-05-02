@@ -10,5 +10,5 @@ import java.util.Random
  */
 data class Event<out T>(
     val type: T,
-    val trigger: Int = Random().nextInt(), // util for jetpack compose alert event
+    val trigger: Int = Random().nextInt(), // util for jetpack compose alert event in Channel
 )

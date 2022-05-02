@@ -2,6 +2,7 @@ package com.lumos.jooycarbrands.ui.brand.state
 
 import android.util.SparseBooleanArray
 import com.lumos.jooycarbrands.ui.brand.entities.BrandPresentation
+import com.lumos.jooycarbrands.util.Constants.ZERO
 
 /**
  * Created by Cepero on 30/04/2022.
@@ -13,5 +14,5 @@ data class BrandUiState(
     val isLoading: Boolean = false,
     val brands: List<BrandPresentation> = listOf(),
     val selectedBrands: SparseBooleanArray = SparseBooleanArray(),
-    val stateRefreshTrigger: Int = 0
+    val stateRefreshTrigger: Int = ZERO
 )
