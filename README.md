@@ -1,5 +1,12 @@
 # JooycarBrands
 
+## Important
+<p>
+    Place in your local.properties this variable
+  <br>
+  SERVER_URL=https://api01.jooycar.com/api/v1/core/
+</p>
+
 <!-- ABOUT THE PROJECT -->
 ### Screenshot
 <table>
