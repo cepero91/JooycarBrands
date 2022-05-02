@@ -14,10 +14,10 @@ import retrofit2.http.Query
 interface BrandService {
 
     @GET(BRANDS)
-    suspend fun getBrands() : List<BrandResponse>
+    suspend fun getBrands(): List<BrandResponse>
 
     @GET(MODELS)
-    suspend fun getModels(@Query(BRAND) brand: String) : List<ModelResponse>
+    suspend fun getModels(@Query(BRAND) brand: String): List<ModelResponse>
 
     companion object {
         const val BRANDS = "brands"
